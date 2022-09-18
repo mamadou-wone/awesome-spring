@@ -15,7 +15,6 @@ public class CurrencyExchangeController {
     public CurrencyExchangeController(Environment environment) {
         this.environment = environment;
     }
-
     @GetMapping("/currency-exchange/from/{from}/to/{to}")
     public CurrencyExchange retrieveExchange(@PathVariable String from, @PathVariable String to){
         CurrencyExchange currencyExchange = new CurrencyExchange(
