@@ -63,7 +63,7 @@ class CustomExporter:
 
     def create_gauge_for_metric(self, metric_name):
         if self.metric_dict.get(metric_name) is None:
-            self.metric_dict[metric_name] = Gauge(metric_name, f"Welcome to my world")
+            # self.metric_dict[metric_name] = Gauge(metric_name, f"Welcome to my world")
             data = export_to_xlxs()
             for item in data:
                 self.metric_dict[metric_name] = Gauge(metric_name, item)
