@@ -34,6 +34,7 @@ def export_to_xlxs():
     income = ["Entrant"]
     outcome = ["Sortant"]
     
+    thioro = []
 
     for item in results:
         sum_in = 0
@@ -48,6 +49,39 @@ def export_to_xlxs():
         income.append(sum_in)    
         outcome.append(sum_out)
              
-        print(item["address"] + " in = " + str(sum_in) + " out = "+ str(sum_out))
+        thioro.append(item["address"] + " in = " + str(sum_in) + " out = "+ str(sum_out))
+    return thioro
             
-export_to_xlxs()
+import os
+import time
+from glob import glob
+from prometheus_client import start_http_server, Gauge
+
+class CustomExporter:
+    def __init__(self) -> None:
+        self.metric_dict = {}
+
+    def create_gauge_for_metric(self, metric_name):
+        if self.metric_dict.get(metric_name) is None:
+            self.metric_dict[metric_name] = Gauge(metric_name, f"Welcome to my world")
+            data = export_to_xlxs()
+            for item in data:
+                self.metric_dict[metric_name] = Gauge(metric_name, item)
+    
+    def set_value(self, metric_name):
+        self.metric_dict["amir"] = "wone"
+
+    def main(self):
+        exporter_port = int(os.environ.get("EXPORTER_PORT", "9877"))
+        start_http_server(exporter_port)
+        metric_name = f"thioro"
+        data = export_to_xlxs()
+        while True:
+            for item in data:
+                self.create_gauge_for_metric(item)
+                self.set_value(item)
+                time.sleep(10)
+
+if __name__ == "__main__":
+    c = CustomExporter()
+    c.main()
