@@ -61,12 +61,11 @@ class CustomExporter:
     def __init__(self) -> None:
         self.metric_dict = {}
 
-    def create_gauge_for_metric(self, metric_name):
-        if self.metric_dict.get(metric_name) is None:
-            # self.metric_dict[metric_name] = Gauge(metric_name, f"Welcome to my world")
-            data = export_to_xlxs()
-            for item in data:
+    def create_gauge_for_metric(self, metric_name, data):
+        if len(data) > 0:
+           for item in data:
                 self.metric_dict[metric_name] = Gauge(metric_name, item)
+                metric_name = metric_name + "s"
     
     def set_value(self, metric_name):
         self.metric_dict["amir"] = "wone"
@@ -77,10 +76,9 @@ class CustomExporter:
         metric_name = f"thioro"
         data = export_to_xlxs()
         while True:
-            for item in data:
-                self.create_gauge_for_metric(item)
-                self.set_value(item)
-                time.sleep(10)
+            self.create_gauge_for_metric(metric_name, data)
+            self.set_value(metric_name)
+            time.sleep(10)
 
 if __name__ == "__main__":
     c = CustomExporter()
